@@ -11,6 +11,7 @@ import { FaCarOn } from "react-icons/fa6";
 import SpeedometerComponent from '@/components/speedometer';
 import { Speedometer } from '@/services/report';
 import Calendar from '@/components/calendar';
+import VehicleDashboard from '@/components/viewcarinfo';
 import {
   format,
   startOfMonth,
@@ -41,18 +42,28 @@ const page = () => {
     console.log(dat);
 
     return (
-        <div className='flex flex-col gap-10 p-4'>
-            <div className='flex gap-24 p-12'>
-                <Widget value={data} title="Total" subtitle="distance travelled" icon={<FaCarOn />} />
-                <Widget value={trip} title="Total" subtitle="number of trips made" icon={<BiTrip />} />
-                
-                <Calendar onDateSelect={handleDateSelect} />
+        <div className='flex p-4 justify-between'>
+            <div className='flex flex-col'>
+                <div className='flex gap-24 p-12'>
+                    <Widget value={data} title="Total" subtitle="distance travelled" icon={<FaCarOn />} />
+                    <Widget value={trip} title="Total" subtitle="number of trips made" icon={<BiTrip />} />
+                </div>
+                <div className=''>
+                    <div className=' flex gap-20'>
+                        <LineChartComponent data={dat} />
+                    </div>
+                </div>
+                <div className='flex gap-8'>
+                    <VehicleDashboard/>
+                </div>
             </div>
             <div className=''>
-                <div className='max-w-[60%] flex gap-20'>
-                    <LineChartComponent data={dat} />
+                <div className='w-72 pr-8'>
+                    <Calendar onDateSelect={handleDateSelect} />
                 </div>
+                <div className='pr-44'>
                     <SpeedometerComponent value={speedValue} maxValue={200} />
+                </div>
             </div>
         </div>
     );

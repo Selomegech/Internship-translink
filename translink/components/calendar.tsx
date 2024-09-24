@@ -74,7 +74,7 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect }) => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-4">
+        <div className="bg-white rounded-lg shadow-md pt-16  w-72">
             <header className="flex justify-between items-center mb-4">
                 <button onClick={handlePrevMonth} className="text-gray-200 hover:text-gray-800">
                     &lt;

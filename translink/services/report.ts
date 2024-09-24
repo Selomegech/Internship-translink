@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { SiD3Dotjs } from 'react-icons/si';
 
-const sid = "048d8e71c7ff2e0f47ce6ed980473a4a"; 
+const sid = "049579ad8aa8c45f9dda8d93bd4f5d01"; 
 
 export const TotalDistance = () => {
     const [data, setData] = useState<any>(null);
@@ -95,7 +95,7 @@ export const Speedometer = () => {
                 setLoading(true);
                 try {
                     const response = await axios.get(
-                        `https://hst-api.wialon.com/wialon/ajax.html?svc=report/exec_report&params={"reportResourceId":28589852,"reportTemplateId":2,"reportObjectId":28589960,"reportObjectSecId":28589960,"interval":{"from":1726638160,"to":1726724560,"flags":0}}&sid=${sid}`
+                        `https://hst-api.wialon.com/wialon/ajax.html?svc=report/exec_report&params={"reportResourceId":28589852,"reportTemplateId":2,"reportObjectId":28589960,"reportObjectSecId":28589960,"reportObjectIdList":[27255747,27256656,27256879,27255796],"interval":{"from":1726638160,"to":1726724560,"flags":0}}&sid=${sid}`
                     ,{ timeout: 10000 });
                     setData(response.data.reportResult.tables[0].total[2]);
 
@@ -119,3 +119,42 @@ export const Speedometer = () => {
 
     return {da, error, loading};
 }
+
+export const SpeedAndDistance = () => {
+    const [distance, setDistance] = useState<number | null>(null);
+    const [speed, setSpeed] = useState<number | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    // Function to fetch speed and distance based on vehicle ID
+    const fetchSpeedAndDistance = async (vehicleId: string) => {
+        setLoading(true);
+        setError(null); // Reset error state
+
+        try {
+             
+            const responseDistance = await axios.get(
+                `https://hst-api.wialon.com/wialon/ajax.html?svc=report/exec_report&params={"reportResourceId":28589852,"reportTemplateId":1,"reportObjectId":${vehicleId},"reportObjectSecId":0,"interval":{"from":1726638160,"to":1726724560,"flags":0}}&sid=${sid}`,
+                { timeout: 10000 }
+            );
+            setDistance(responseDistance.data.reportResult.tables[0].total[2]);
+
+            const responseSpeed = await axios.get(
+                `https://hst-api.wialon.com/wialon/ajax.html?svc=report/exec_report&params={"reportResourceId":28589852,"reportTemplateId":2,"reportObjectId":${vehicleId},"reportObjectSecId":0,"interval":{"from":1726638160,"to":1726724560,"flags":0}}&sid=${sid}`,
+                { timeout: 10000 }
+            );
+            setSpeed(responseSpeed.data.reportResult.tables[0].total[2]);
+
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Axios error:', error.response?.data);
+            }
+            setError(`Failed to fetch data: ${error}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { fetchSpeedAndDistance, distance, speed, error, loading };
+};
+

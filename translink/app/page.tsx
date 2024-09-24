@@ -4,6 +4,7 @@ import BarChart from "@/components/barchart";
 import FuelConsMathChart from "@/components/fuelconsmathchart";
 import FuelLevelParamsChart from "@/components/fuellevelparamschart";
 import FuelConsImpulseChart from "@/components/fuelconsimpulsechart";
+import VehicleDashboard from "@/components/viewcarinfo";
 export default function Home() {
   return (
     <div className="">
